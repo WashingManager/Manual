@@ -84,6 +84,7 @@
             padding: 15px;
             border-radius: 5px;
         }
+		/* 글자색 */
         .bg-light-green { background-color: #b7e1cd; }
         .bg-light-red { background-color: #f4c7c3; }
         .text-red { color: #c53929; }
@@ -100,6 +101,8 @@
         .bg-light-orange { background-color: #fce5cd; }
         .bg-light-blue-2 { background-color: #cfe2f3; }
         .bg-light-purple { background-color: #d9d2e9; }
+		.text-deep-blue { color: #253b4d; }
+		
 		.section h3 {
 			margin-top: 40px; /* 각 h3 태그 상단 여백 증가 */
 			margin-bottom: 10px; /* 각 h3 태그 하단 여백 증가 */
@@ -236,7 +239,130 @@
 			width: 100%;
 			margin: 0;
 		}
+		/*툴팁 관련*/
+		.tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted #666;
+            cursor: help;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 300px;
+            background-color: #2c3e50;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9em;
+            line-height: 1.4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2c3e50 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+		.tooltip .tooltip-text ul {
+			padding-left: 20px;
+			margin: 5px 0;
+		}
+		.tooltip .tooltip-text li {
+			margin-bottom: 5px;
+		}
+		.tooltip .tooltip-text .text-deep-blue {
+			color: #0000FF;
+			font-weight: bold;
+		}
+		.tooltip .tooltip-text .text-red {
+			color: #FF0000;
+			font-weight: bold;
+		}
+		.tooltip .tooltip-text .bg-very-light-green {
+			background-color: #E8F5E9;
+			padding: 2px 4px;
+		}
+
+        /* 모바일에서는 툴팁을 터치로 활성화 */
+        @media (max-width: 768px) {
+            .tooltip .tooltip-text {
+                width: 160px;
+                font-size: 0.8em;
+            }
+        }
 		
+		.collapsible {
+            cursor: pointer;
+            border-bottom: 1px dotted #666;
+            color: #2c3e50;
+            position: relative;
+            display: inline-block;
+        }
+
+        .collapse-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-top: 5px;
+            padding: 0 15px;
+			visibility: hidden;
+			opacity: 0;
+			transition: visibility 0s linear 300ms, opacity 300ms;
+        }
+
+        .collapse-content.show {
+            max-height: 500px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+			visibility: visible;
+			opacity: 1;
+			transition: visibility 0s linear 0s, opacity 300ms;
+        }
+
+        .collapsible:hover {
+            color: #1a252f;
+        }
+
+        /* 화살표 아이콘 스타일 */
+        .collapsible::after {
+            content: '▼';
+            font-size: 0.7em;
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+
+        .collapsible.active::after {
+            transform: rotate(180deg);
+        }
+
+        /* 모바일 최적화 */
+        @media (max-width: 768px) {
+            .collapse-content.show {
+                max-height: 1000px; /* 모바일에서 더 큰 높이 허용 */
+            }
+        }
     </style>
 </head>
 <body>
@@ -250,47 +376,71 @@
 		<h2>주요 내용</h2>
 		
 		<h3>1. 운영진 기본 태도</h3>
-		<p>'안내'와 '요청'으로 계도합니다.</p>
-        <p>운영진 부담 최소화를 위해 요점만 간단하게 표현하되, 각자의 성정에 따라 완곡한 표현을 하는 것은 자유입니다.</p>
-
+		<p>'안내'와 '요청'으로 <span class="tooltip">계도<span class="tooltip-text">운영진 부담 최소화를 위해 요점만 간단하게 표현하되, 각자의 성정에 따라 완곡한 표현을 하는 것은 자유</span></span>합니다.</p>
+        		
 		<h3>2. 방원의 닉네임</h3>
-		<p><span class="bg-light-green">개별닉네임</span>만 방칙에 준하는 것으로 인정</p>
-		<p><span class="bg-light-red">카톡 자동생성 기본닉네임</span>은 입장즉시 변경(방칙), 1회 안내 후(상대가 대화 확인 후 1분-3분 내외, 최대 10분) 미변경 시 사유 설명 후 퇴장</p>	
+		<p><span class="collapsible" data-target="content1"><span class="bg-light-green">개별닉네임</span></span>만 방칙에 준하는 것으로 인정</p>
+		<div id="content1" class="collapse-content">
+			<p><span class="text-deep-blue">허용되는 닉네임</span></p>
+				<ul>
+				 <li><span class="bg-very-light-green">발음 가능한 형태</span></li>
+				 <li><span class="bg-very-light-green">약어는 한국어 병기(본인이 원하는 발음형태)</span><p>예)OMG(오엠지), ASAP(에이삽) 등</p></li>
+				 <li><span class="bg-very-light-green">영어 외 외국어 사용 시 한국어 병기</span><p>예)οὐρανός(우라노스) 등</p></li>
+				</ul>
+		</div>
+		
+		<p><span class="bg-light-red">카톡 자동생성 기본닉네임</span>은 입장즉시 변경 <span class="collapsible" data-target="content2">안내</span>후 미변경 시 강제퇴장</p>
+		
+		<div id="content2" class="collapse-content">
+			<p><span class="text-deep-blue">안내방법</span></p>
+				<ul>
+				 <li>입장 후 봇안내 메시지에 '닉네임 변경' 공지가 있으므로 미변경 시 최소 1회(필수) 안내</li>
+				 <li>상대가 확인 의사 표현 후 변경 시간 보장 (1분-3분 내외)</li>
+				 <li>미변경 시 사유 설명 후 퇴장</li>
+				</ul>
 		<h4><strong>닉네임 변경 안내문구</strong></h4> 
 		<p class="text-orange">[안내]<br>
 		우리방은 카카오톡 기본닉네임을 금지하고 있습니다.<br> 공지를 천천히 읽어보시고 방칙에 따라 닉네임을 변경해주시기 바랍니다.</p>
 		<h4><strong>강제퇴장 안내문구</strong></h4> 
 		<p class="text-red">[안내]<br>
 		입장 즉시 개별닉네임으로 변경하지 않아 방칙 미준수로 강제퇴장조치 합니다.</p>
+		</div>
+		
+		
 		<h3>3. 경고관리 [아웃제]</h3>
 		<p>각 권한 범위 내 활동 <span class="text-red">(단, 치명적 활동에 대해 임시 경고/강퇴 권한 허용)</span></p>
 		
-		<h4 class="text-yellow">· 심각한 활동 [2아웃]</h4>
-		<p class="text-yellow">비속어(조롱), 감정적 표현, 미확인 정보(불안조장), 불필요한 분란(불안), 확정적 예언, 어그로(관심유도) 발언, 비협조 1회 외 방 환경에 심각한 활동 (즉시 경고)</p>
+		<h4 class="text-orange">· 심각한 활동 [2아웃]</h4>
+		<p class="text-orange">비속어(조롱성), 감정적 표현, 미확인 정보(불안조장), 불필요한 분란, 확정적 예언, 어그로(관심유도) 발언, 비협조 1회 외 방 환경에 심각한 활동(즉시 경고)</p>
 		
 		<h4 class="text-red">· 치명적 활동 [1아웃]</h4>
 		<p class="text-red">욕설, 음란물, 정신적 충격물(시신훼손,혈흔 등), 선동, 비주제 광고, 비협조2회 외 방 환경에 치명적 활동 (즉시 강퇴)</p>
 		
-		<p>*애매한 경우 운영진 논의로 결정</p>
-
-		<h3>불안감 조성 사례와 반례</h3>
+		<h4><span class="bg-light-red">*애매한 경우 운영진 논의로 결정</span></h4>
+		
+		
+		<h3>방칙 세부사례</h3>
+		
+		<p><span class="collapsible" data-target="content3">불안감 조성</span></p>
+		<div id="content3" class="collapse-content">
 		<ul>
 		<li>단순 개인의 불안은 단발적 표현 가능</li>
 		(단, 잦은 빈도로 방 분위기 해칠 경우 개입)
 		<li>정세를 통찰하여 나름의 근거 있는 전쟁 예상은 허용</li>
 		</ul>
-		
-
+	
 		<p><span class="bg-light-red">사례 예시)</span> '동일인의 지속된 불안표현', '특정 고문 행위 묘사' 등 불안을 야기하고 확산시키는 발언은 <strong>불안감 조성으로 간주</strong>하며, 그외 방 분위기를 해치는 활동은 <span class="text-red">운영진 개입</span><p>
 		<p><span class="bg-light-green">반례 예시)</span> '요즘 정세를 보고 있으면 마치 전쟁을 준비하고 있는 것 같다.', '어제 전쟁하는 꿈을 꾸었다.', '밖에서 폭발음이 들렸다' 등 <strong>문제되지 않음</strong><p>
-		
-		<h3>분란</h3>
+		</div>
+
+		<p><span class="collapsible" data-target="content4">분란</span></p>
+		<div id="content4" class="collapse-content">
 		<p>관심성(어그로성) + 무례한 태도로 기존 대화 흐름을 방해하는 등 방 분위기를 해치는 활동을 분란으로 규정.<p>
-	
+		</div>
 		<h3>4. 적용과 판단</h3>
 		<p>모든 적용은 주 기능(정보공유)을 원활히 하는 선에서 '혼잡도'와 '긴장도'에 따라 판단</p>
-	</div>
-
+	
+	
     <div class="section">
         <h2>대화방 혼잡도 구분</h2>
         
@@ -371,13 +521,14 @@
         <p><span class="text-dark-green">· 안내진</span> : 인사와 안내(방의 첫인상)</p>
         <p><span class="text-purple">· 논의진</span> : '정보공유'기능 유지를 위한 사안 논의 및 적용</p>
         
-        <p>구분 목적</p>
+        <h4>구분 목적</h4>
         <p>채널 주기능(정보공유)을 유지하면서 진 구분에 따라 <span class="text-yellow">논의 부담</span>과 <span class="text-light-red">소모적 활동</span>을 최소화</p>
         <br>
         <h3 class="text-dark-green">[안내진]</h3>
         <p>6~7명/총 10명 중</p>
         
-        <p>요구되는 성향 & 능력</p>
+		<p><span class="collapsible" data-target="content5">요구성향 & 능력</span></p>
+		<div id="content5" class="collapse-content">
         <ul>
             <li>컴퓨터나 스마트폰 활용에 능숙 (온라인 대화방 특성)</li>
             <li>방의 주기능인 '정보 공유' 기능 유지를 위한 활동 지지</li>
@@ -385,6 +536,7 @@
             <li>안내하는 것에 보람과 기쁨을 느낀다.</li>
             <li>불안도가 낮고 혼란한 상황을 대하는 것이 할만하다.</li>
         </ul>
+		</div>
         
         <p class="bg-light-yellow">주역할 : 인사와 안내 및 주기능(정보공유) 유지 활동</p>
         
@@ -403,7 +555,8 @@
         <h3 class="text-purple">[논의진]</h3>
         <p>3~4명/총 10명 중</p>
         
-        <p>요구되는 성향 & 능력</p>
+        <p><span class="collapsible" data-target="content5">요구성향 & 능력</span></p>
+		<div id="content5" class="collapse-content">
         <ul>
             <li>컴퓨터나 스마트폰 활용에 익숙(온라인 대화방 특성)</li>
             <li>방의 주기능인 '정보 공유' 기능 유지를 위한 논의 가능</li>
@@ -412,7 +565,7 @@
             <li>글 맥락 이해/언어 표현의 축약/상세 (우선, 노력하는 분)</li>
             <li>관리자 경험(우선, 없어도 관심이 있는 분)</li>
         </ul>
-        
+        </div>
         <p class="bg-light-orange">주역할 : '정보공유' 기능 유지를 위한 사안 논의</p>
         
         <p class="bg-light-blue-2">→ 논의권한1 : 안내권한2 + [강퇴, 방칙에 준하는 경우, 활동정지(1개월)]</p>
@@ -596,6 +749,110 @@
 				});
 			});
 		}
+		
+		document.addEventListener('DOMContentLoaded', function() {
+			// 모바일 디바이스 확인
+			const isMobile = 'ontouchstart' in window || navigator.msMaxTouchPoints;
+
+			const tooltips = document.querySelectorAll('.tooltip');
+			
+			tooltips.forEach(tooltip => {
+				if (isMobile) {
+					// 모바일에서는 터치 이벤트 사용
+					let isTooltipVisible = false;
+					
+					tooltip.addEventListener('touchstart', function(e) {
+						e.preventDefault(); // 기본 터치 동작 방지
+						
+						// 모든 다른 툴팁 숨기기
+						tooltips.forEach(t => {
+							const tooltipText = t.querySelector('.tooltip-text');
+							if (tooltipText) {
+								tooltipText.style.visibility = 'hidden';
+								tooltipText.style.opacity = '0';
+							}
+						});
+						
+						// 현재 툴팁 토글
+						const tooltipText = this.querySelector('.tooltip-text');
+						if (tooltipText) {
+							if (isTooltipVisible) {
+								tooltipText.style.visibility = 'hidden';
+								tooltipText.style.opacity = '0';
+							} else {
+								tooltipText.style.visibility = 'visible';
+								tooltipText.style.opacity = '1';
+							}
+							isTooltipVisible = !isTooltipVisible;
+						}
+					});
+					
+					// 툴팁 외부 터치 시 닫기
+					document.addEventListener('touchstart', function(e) {
+						if (!tooltip.contains(e.target)) {
+							const tooltipText = tooltip.querySelector('.tooltip-text');
+							if (tooltipText) {
+								tooltipText.style.visibility = 'hidden';
+								tooltipText.style.opacity = '0';
+								isTooltipVisible = false;
+							}
+						}
+					});
+				} else {
+					// 데스크톱에서는 마우스 이벤트 사용
+					tooltip.addEventListener('mouseenter', function() {
+						const tooltipText = this.querySelector('.tooltip-text');
+						if (tooltipText) {
+							tooltipText.style.visibility = 'visible';
+							tooltipText.style.opacity = '1';
+						}
+					});
+
+					tooltip.addEventListener('mouseleave', function() {
+						const tooltipText = this.querySelector('.tooltip-text');
+						if (tooltipText) {
+							tooltipText.style.visibility = 'hidden';
+							tooltipText.style.opacity = '0';
+						}
+					});
+				}
+			});
+		});
+		
+		document.addEventListener('DOMContentLoaded', function() {
+			const collapsibles = document.getElementsByClassName('collapsible');
+			
+			for (let i = 0; i < collapsibles.length; i++) {
+				collapsibles[i].addEventListener('click', function() {
+					this.classList.toggle('active');
+					const targetId = this.getAttribute('data-target');
+					const content = document.getElementById(targetId);
+					
+					if (content) {
+						if (content.classList.contains('show')) {
+							content.classList.remove('show');
+							content.style.maxHeight = null;
+						} else {
+							// 다른 열린 내용들 닫기 (선택적)
+							const allContents = document.getElementsByClassName('collapse-content');
+							for (let j = 0; j < allContents.length; j++) {
+								allContents[j].classList.remove('show');
+								allContents[j].style.maxHeight = null;
+							}
+							const allCollapsibles = document.getElementsByClassName('collapsible');
+							for (let j = 0; j < allCollapsibles.length; j++) {
+								allCollapsibles[j].classList.remove('active');
+							}
+							
+							// 현재 내용 열기
+							content.classList.add('show');
+							content.style.maxHeight = content.scrollHeight + "px";
+							this.classList.add('active');
+						}
+					}
+				});
+			}
+		});
 </script>
 
 </html>
