@@ -408,7 +408,7 @@
 		
 		<h2>채널관리 매뉴얼</h2>
 
-		<div id="content2" class="collapse-content">
+		<div id="content1" class="collapse-content">
 			<p><span class="text-deep-blue">안내방법</span></p>
 				<ul>
 				 <li>입장 후 봇안내 메시지에 '닉네임 변경' 공지가 있으므로 미변경 시 최소 1회(필수) 안내</li>
@@ -427,19 +427,18 @@
 		<h3>1. 운영진 기본 태도</h3>
 		<p>'안내'와 '요청'으로 <span class="tooltip">계도<span class="tooltip-text">운영진 부담 최소화를 위해 요점만 간단하게 표현하되, 각자의 성정에 따라 완곡한 표현을 하는 것은 자유이며, 혼잡/긴장도에 따라 단호히 대응</span></span>합니다.</p>
 
-		<h3>2. 방원의 닉네임</h3>
-		<p><span class="collapsible" data-target="content1"><span class="bg-light-green">개별닉네임</span></span>만 방칙에 준하는 것으로 인정</p>
-		<div id="content1" class="collapse-content">
+		<!-- "2. 방원의 닉네임" 섹션 -->
+		<p><span class="collapsible" data-target="content1-nickname"><span class="bg-light-green">개별닉네임</span></span>만 방칙에 준하는 것으로 인정</p>
+		<div id="content1-nickname" class="collapse-content">
 			<p><span class="text-deep-blue">허용되는 닉네임</span></p>
-				<ul>
-				 <li><span class="bg-very-light-green">발음 가능한 형태</span></li>
-				 <li><span class="bg-very-light-green">약어는 한국어 병기(본인이 원하는 발음형태)</span><p>예)OMG(오엠지), ASAP(에이삽) 등</p></li>
-				 <li><span class="bg-very-light-green">영어 외 외국어 사용 시 한국어 병기</span><p>예)οὐρανός(우라노스) 등</p></li>
-				</ul>
+			<ul>
+				<li><span class="bg-very-light-green">발음 가능한 형태</span></li>
+				<li><span class="bg-very-light-green">약어는 한국어 병기(본인이 원하는 발음형태)</span><p>예)OMG(오엠지), ASAP(에이삽) 등</p></li>
+				<li><span class="bg-very-light-green">영어 외 외국어 사용 시 한국어 병기</span><p>예)οὐρανός(우라노스) 등</p></li>
+			</ul>
 		</div>
 
 		<p><span class="bg-light-red">카톡 자동생성 기본닉네임</span>은 입장즉시 변경 <span class="collapsible" data-target="content2">안내</span>후 미변경 시 강제퇴장</p>
-
 		<div id="content2" class="collapse-content">
 			<p><span class="text-deep-blue">안내방법</span></p>
 				<ul>
@@ -883,7 +882,6 @@
 							content.classList.remove('show');
 							content.style.maxHeight = null;
 						} else {
-							// 다른 열린 내용들 닫기 (선택적)
 							const allContents = document.getElementsByClassName('collapse-content');
 							for (let j = 0; j < allContents.length; j++) {
 								allContents[j].classList.remove('show');
@@ -894,11 +892,12 @@
 								allCollapsibles[j].classList.remove('active');
 							}
 
-							// 현재 내용 열기
 							content.classList.add('show');
 							content.style.maxHeight = content.scrollHeight + "px";
 							this.classList.add('active');
 						}
+					} else {
+						console.error(`Collapse content with ID "${targetId}" not found.`);
 					}
 				});
 			}
